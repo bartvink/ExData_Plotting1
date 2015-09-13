@@ -13,13 +13,11 @@ HouseholdPowerCon <- read.table("./data/household_power_consumption.txt",
                                 sep = ";",
                                 na.strings = "?")
 
-# Convert date and time.
-HouseholdPowerCon$Date <- as.Date(HouseholdPowerCon$Date, format="%d/%m/%Y")
-HouseholdPowerCon$Datetime <- strptime(paste(HouseholdPowerCon$Date,HouseholdPowerCon$Time),
-                          format="%Y-%m-%d %H:%M:%S")
+# Subset data
+HouseholdPowerCon <- HouseholdPowerCon[grep("^1/2/2007$|^2/2/2007$",HouseholdPowerCon$Date),]
 
-# Subset dates between 2007-02-01 and 2007-02-02.
-HouseholdPowerCon <- HouseholdPowerCon[HouseholdPowerCon$Date == "2007-02-01" | HouseholdPowerCon$Date == "2007-02-02", ]
+#convert Date and Time column to Date class and store it in Date column
+HouseholdPowerCon$Date <- strptime(paste(HouseholdPowerCon$Date,HouseholdPowerCon$Time), "%d/%m/%Y %H:%M:%S")
 
 #set english locale to get weekdays in english
 Sys.setlocale("LC_ALL", "en_US")

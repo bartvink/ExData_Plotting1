@@ -13,22 +13,25 @@ HouseholdPowerCon <- read.table("./data/household_power_consumption.txt",
                                 sep = ";",
                                 na.strings = "?")
 
-# Convert date and time.
-HouseholdPowerCon$Date <- as.Date(HouseholdPowerCon$Date, format = "%d/%m/%Y")
+# Subset data
+HouseholdPowerCon <- HouseholdPowerCon[grep("^1/2/2007$|^2/2/2007$",HouseholdPowerCon$Date),]
 
-# Subset dates between 2007-02-01 and 2007-02-02.
-HouseholdPowerCon <- HouseholdPowerCon[HouseholdPowerCon$Date == "2007-02-01" | HouseholdPowerCon$Date == "2007-02-02", ]
+# Convert Date and Time column to Date class and store it in Date column
+HouseholdPowerCon$Date <- strptime(paste(HouseholdPowerCon$Date,HouseholdPowerCon$Time), "%d/%m/%Y %H:%M:%S")
 
-#set layout
+# Set english locale to get weekdays in english
+Sys.setlocale("LC_ALL", "en_US")
+
+# Set layout
 par(mfcol=c(2,2))
 
-#make plot in top left corner
+# Make plot in top left corner
 plot(HouseholdPowerCon$Date,HouseholdPowerCon$Global_active_power, 
      type="l",
      ylab="Global Active Power",
      xlab="")
 
-#make plot in bottom left, legend border not visible, legend font adjusted
+# Make plot in bottom left, legend border not visible, legend font adjusted
 plot(HouseholdPowerCon$Date,HouseholdPowerCon$Sub_metering_1, 
      type="l",
      ylab="Energy sub metering",
@@ -39,13 +42,13 @@ lines(HouseholdPowerCon$Date,HouseholdPowerCon$Sub_metering_3,
       type="l", col="blue")
 legend("topright", box.lwd=0, legend=names(data[7:9]), lty=1, col=c("black","red","blue"), cex=0.7)
 
-#make plot in top right corner
+# Make plot in top right corner
 plot(HouseholdPowerCon$Date,HouseholdPowerCon$Voltage, 
      type="l",
      ylab="Voltage",
      xlab="datetime")
 
-#make plot in bottom right corner
+# Make plot in bottom right corner
 plot(HouseholdPowerCon$Date,HouseholdPowerCon$Global_reactive_power, 
      type="l",
      ylab="Global_reactive_power",
